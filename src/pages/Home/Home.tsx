@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { getSicks } from '../../services/apiInstance';
+import { useRef, useState, useCallback } from 'react';
 import './Home.css';
-import { useCallback } from 'react';
 import { SearchResult } from '../../types/Search';
 import { useScrollToSelectedElement } from '../../hooks/useScrollToSelectedElement';
+import useSearchData from '../../hooks/useSearchData';
 
 export function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [recommendedResults, setRecommenedResults] = useState<SearchResult[]>([]);
-  const [lastSearchedQuery, setLastSearchedQuery] = useState<string>(''); // New state variable
-  const cache = useRef<{ [query: string]: SearchResult[] }>({});
-  const delayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [lastSearchedQuery, setLastSearchedQuery] = useState<string>('');
   const [selectedItemIndex, setSelectedItemIndex] = useState<number>(-1);
   const resultsContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -59,55 +56,7 @@ export function Home() {
     setSearchQuery(e.target.value);
   }, []);
 
-  useEffect(() => {
-    if (delayTimerRef.current) {
-      clearTimeout(delayTimerRef.current);
-    }
-
-    if (searchQuery.trim() !== '' && cache.current[searchQuery]) {
-      setRecommenedResults(cache.current[searchQuery]);
-      setSelectedItemIndex(-1);
-    } else {
-      delayTimerRef.current = setTimeout(() => {
-        if (searchQuery.trim() !== '') {
-          getSicks(searchQuery).then(res => {
-            setRecommenedResults(res);
-            cache.current[searchQuery] = res;
-            console.info('calling api');
-            setSelectedItemIndex(-1);
-          });
-        } else {
-          setRecommenedResults([]);
-          setSelectedItemIndex(-1);
-        }
-      }, 400);
-    }
-
-    return () => {
-      if (delayTimerRef.current) {
-        clearTimeout(delayTimerRef.current);
-      }
-    };
-  }, [searchQuery]);
-
-  // useEffect(() => {
-  //   if (resultsContainerRef.current && selectedItemIndex !== -1) {
-  //     const selectedElement = resultsContainerRef.current.querySelector('.selected');
-  //     if (selectedElement) {
-  //       selectedElement.scrollIntoView({
-  //         behavior: 'smooth',
-  //         block: 'center',
-  //         inline: 'nearest',
-  //       });
-  //     }
-  //   }
-  // }, [selectedItemIndex]);
-  const scrollOptions: ScrollIntoViewOptions = {
-    behavior: 'smooth',
-    block: 'center',
-    inline: 'nearest',
-  };
-
+  useSearchData(searchQuery, setRecommenedResults, setSelectedItemIndex);
   useScrollToSelectedElement(resultsContainerRef, selectedItemIndex, scrollOptions);
 
   return (
@@ -157,3 +106,9 @@ export function Home() {
     </div>
   );
 }
+
+const scrollOptions: ScrollIntoViewOptions = {
+  behavior: 'smooth',
+  block: 'center',
+  inline: 'nearest',
+};

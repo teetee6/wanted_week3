@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-// Custom Hook
 export function useScrollToSelectedElement(
   resultsContainerRef: React.RefObject<HTMLDivElement>,
   selectedItemIndex: number,
