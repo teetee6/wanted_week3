@@ -1,7 +1,7 @@
 ## 원티드 프리온보딩 3주차 과제 - 개인
 
 - 본 repository는 원티드 프리온보딩 프론트엔드 3주차 과제입니다.
-
+- [배포주소](http://preonboarding-week3-hyoshik.s3-website-ap-southeast-2.amazonaws.com/) 입니다
 ### 기술 스택
 
 <div>
