@@ -183,4 +183,12 @@ Element 인터페이스의 scrollIntoView() 메소드를 이용하여 `<div clas
 
 </div>
 </details>
-````
+
+## 💡 구현 화면
+
+
+
+
+https://github.com/teetee6/wanted_week3/assets/17748068/65bd25f1-8b85-47b6-b07d-9497f488599f
+
+
