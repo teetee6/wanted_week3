@@ -40,7 +40,7 @@ function useSearchData(
         clearTimeout(delayTimerRef.current);
       }
     };
-  }, [searchQuery, setRecommendedResults, setSelectedItemIndex]);
+  }, [searchQuery, setRecommendedResults, setSelectedItemIndex, debounceDelay]);
 }
 
 export default useSearchData;
